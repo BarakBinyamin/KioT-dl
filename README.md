@@ -22,7 +22,7 @@ Directory
 
 ## Install 
 ### Mac
-1. Click <a href="https://github.com/BarakBinyamin/KioT-dl/releases/download/beta/KioT-dl-1.0.0-x64.dmg">Mac OS</a> to download a .dmg, once its downloaded you can double click it and it will open up the cool mac download an app window, from there move the app (just the app) into applications.
+1. Click <a href="https://github.com/BarakBinyamin/KioT-dl/releases/download/beta/KioT-dl-1.0.0-x64.dmg">Mac OS</a> to download a .dmg, once its downloaded you can double click it and it will open up the cool mac download an app window, from there move the app (just the app) into applications
 2. Since I don't have code signing privaleges you'll have to manually open the app the first time, to do this, go to applications in finder, find KioT-dl, right click on it and select open, it will prompt you with a "you downloaded this from the internet, are you sure you want to run this?", you can say yes if you feel comfortable with that
 ### Windows and linux
 Releases coming soon...
