@@ -1,9 +1,10 @@
 # KioT-dl
 <p align="center">
-<img src="/electron/icons/mac/icon.png" style="width:100px;"/>
+<img src="electron/icons/mac/icon.png" style="width:100px;"/>
 </p>
 <p align="center">
-    <a href="">Mac OS</a> | <a href="">Linux</a> | <a href="">Windows</a>
+    <!-- <span align="center"> Download</span><br> -->
+    <span href="">Mac OS</span> | <span href="">Linux</span> | <span href="">Windows</span>
 </p>
 
 <p>
