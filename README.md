@@ -1,6 +1,6 @@
 # KioT-dl
 <p align="center">
-<img src="src/icons/mac/icon.png" style="width:10%;"/>
+<img src="src/icons/mac/icon.png" style="width:100px;"/>
 </p>
 <p align="center">
     <a href="">Mac OS</a> | <a href="">Linux</a> | <a href="">Windows</a>
