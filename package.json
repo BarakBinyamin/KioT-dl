@@ -9,7 +9,10 @@
     "make": "cd view &&  npm run build && cd .. && electron-forge make",
     "clean": "bash clean.sh"
   },
-  "author": "",
+  "config": {
+    "forge": "./electron/forge.config.js"
+  },
+  "author": "Barak Binyamin",
   "license": "ISC",
   "version": "1.0.0",
   "devDependencies": {

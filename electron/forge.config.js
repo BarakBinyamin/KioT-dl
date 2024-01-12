@@ -2,11 +2,11 @@ const path = require('node:path')
 
 module.exports = {
     packagerConfig: {
-        icon: "icons/mac/icon.icns",
+        icon: "electron/icons/mac/icon.icns",
         "name": "KioT-dl",
         extraResource: [
-            path.join(process.cwd(), "icons", "mac", "icon.icns"),
-            path.join(process.cwd(), "icons", "mac", "icon.png")
+            path.join(process.cwd(), "electron", "icons", "mac", "icon.icns"),
+            path.join(process.cwd(), "electron", "icons", "mac", "icon.png")
         ],
         ignore: [
           /library\/*.m4a/,
@@ -23,7 +23,7 @@ module.exports = {
       {
         name: '@electron-forge/maker-dmg',
         config: {
-          icon: path.join(process.cwd(), "icons","mac", "icon.icns"),
+          icon: path.join(process.cwd(), "electron", "icons","mac", "icon.icns"),
           additionalDMGOptions :{
             "background-color" : "#36393F"
           },

@@ -3,5 +3,5 @@ out
 .DS_Store
 old
 tmp
-src/library/*.m4a
-# src/library/*.png
+services/library/*.m4a
+services/library/*.png

@@ -16,10 +16,10 @@ async function main(){
   const createWindow = () => {
     const mainWindow = new BrowserWindow({ 
       width: defaultWidth, height: defaultHeight,
-      //icon: path.join(__dirname,'icons/mac/icon.png'),
+      //icon: path.join(__dirname,'electron/icons/mac/icon.png'),
       webPreferences: {
         webSecurity: false,
-        preload: path.join(__dirname, 'electron-api-back.js'),
+        preload: path.join(__dirname, 'electron/electron-api-back.js'),
       }
     })
     mainWindow.loadFile("./app.html")
@@ -49,7 +49,7 @@ async function main(){
   server( {
     dist    : `${__dirname}/view/dist`,
     port    :  API_PORT, 
-    library : `${__dirname}/library`
+    library : `${__dirname}/services/library`
   })
 }
 
