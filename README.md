@@ -4,7 +4,7 @@
 </p>
 <p align="center">
     <!-- <span align="center"> Download</span><br> -->
-    <span href="">Mac OS</span> | <span href="">Linux</span> | <span href="">Windows</span>
+    <a href="https://github.com/BarakBinyamin/KioT-dl/releases/download/beta/KioT-dl-1.0.0-x64.dmg">Mac OS</a> | <span href="">Linux</span> | <span href="">Windows</span>
 </p>
 
 <p>
