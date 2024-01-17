@@ -18,7 +18,6 @@ async function main(){
       width: defaultWidth, height: defaultHeight,
       //icon: path.join(__dirname,'electron/icons/mac/icon.png'),
       webPreferences: {
-        webSecurity: false,
         preload: path.join(__dirname, 'electron/electron-api-back.js'),
       }
     })

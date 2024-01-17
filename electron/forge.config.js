@@ -20,6 +20,17 @@ module.exports = {
     //         "darwin"
     //     ]
     //   },
+    //  {
+    //   name: '@electron-forge/maker-deb',
+    //   config: {
+    //     options: {
+    //       maintainer: 'Joe Bloggs',
+    //       homepage: 'https://example.com'
+    //     }
+    //   },
+      {
+        name: '@electron-forge/maker-squirrel',
+      },
       {
         name: '@electron-forge/maker-dmg',
         config: {

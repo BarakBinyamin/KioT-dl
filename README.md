@@ -54,3 +54,4 @@ There were several cool challanges while making this project
 - https://stackoverflow.com/questions/59800915/-how-can-i-execute-a-custom-ffmpeg-string-command-with-fluent-ffmpeg - ffmpeg wrapper
 - https://www.fusejs.io/api/options.html#threshold - fuse search engine 
 - https://www.svgrepo.com/svg/528951/download-minimalistic?edit=true - jtml svg's
+

@@ -2,7 +2,8 @@ node_modules
 out
 .DS_Store
 old
-tmp
+services/scrapers/tmp/*
+!services/scrapers/tmp/README.md
 services/library/*.m4a
 services/library/*.png
 services/library/*.json

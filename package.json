@@ -3,7 +3,7 @@
   "main": "app.js",
   "scripts": {
     "prep"   : "npm install && cd view && npm install",
-    "dev"    : "DEV=true electron-forge start",
+    "dev"    : "electron-forge start DEV=true",
     "start"  : "cd view && npm run build && cd .. && electron-forge start",
     "package": "cd view && npm run build && cd .. && electron-forge package",
     "make"   : "cd view && npm run build && cd .. && electron-forge make",
