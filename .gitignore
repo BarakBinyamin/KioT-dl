@@ -7,3 +7,4 @@ services/scrapers/tmp/*
 services/library/*.m4a
 services/library/*.png
 services/library/*.json
+services/database/*.json
