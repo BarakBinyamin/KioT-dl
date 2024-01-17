@@ -5,3 +5,4 @@ old
 tmp
 services/library/*.m4a
 services/library/*.png
+services/library/*.json

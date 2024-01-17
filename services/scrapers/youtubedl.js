@@ -16,14 +16,15 @@ const MESSAGES = {
    "success" : "Finished"
 } 
 
+// copy pasted
 const executeFfmpeg = args => {
     let command = ffmpeg().output(' '); // pass "Invalid output" validation
     command._outputs[0].isFile = false; // disable adding "-y" argument
     command._outputs[0].target = "";    // bypass "Unable to find a suitable output format for ' '"
     command._global.get = () => {       // append custom arguments
-        return typeof args === "string" ? args.split(' ') : args;
-    };
-    return command;
+        return typeof args === "string" ? args.split(' ') : args
+    }
+    return command
 }
 
 class youtubeDL { 
@@ -34,7 +35,11 @@ class youtubeDL {
     }
 
     async report(songId, message, percent){
-        const info =  `${message} ${ percent ? String(Math.round(percent))+" %" : ""}`
+        let percentString = ""
+        if (percent!=undefined){
+            percentString = " " + String(Math.round(percent)) + " %"
+        }
+        const info =  `${message}${percentString}`
         this.io.emit(this.io.events.info,{
             songId  : songId,
             data    : info
@@ -42,18 +47,36 @@ class youtubeDL {
         this.queue.find(item=>item.songId==songId).progress = info
     }
 
+    async reportError(songId, error){
+        // Termperary fix for monitoring error
+        this.io.emit(this.io.events.error,{
+            songId  : songId,
+            data    : error
+        })
+    }
+
     async wait(ff, songId, messageId){
         const classy = this
         await new Promise(res=>{
             ff.on('progress', (progress) => {
-                if (progress.percent) {
-                    classy.report(songId, messageId, progress.percent)
-                }
-            }).on('error', error=>console.log(messageId,error)).on('end', ()=>{
+                classy.report(songId, messageId, progress?.percent)
+            }).on('error', error=>{
+                console.log(messageId,error)
+                classy.reportError(songId,error)
+                res()
+            }).on('end', ()=>{
                 res()
             })
         })
     }
+
+    // TODO independent functions for each
+    // Download song
+    // Download Image 
+    // Convert to m4a
+    // Add Picture 
+    // Add more tags
+    // Report Success
 
     async get(songId, link, tags, library){
         const classy          = this
@@ -80,7 +103,11 @@ class youtubeDL {
                         fs.createWriteStream(songUnformatted)
                     ).on('finish',(err)=>{
                         res()
-                    }).on('error',error=> console.log(error))
+                    }).on('error',error=>{
+                        console.log(error)
+                        classy.reportError(songId,error)
+                        res()
+                    })
             })
 
             // Download Image ffmpeg -i "https://images.genius.com/2a4e7fb7c56c4939051da9e59947263f.1000x1000x1.png" -vf scale=512:512 out.png
@@ -88,10 +115,13 @@ class youtubeDL {
             await classy.wait(coverImage, songId, MESSAGES.cover)
             // console.log(tags.artwork)
 
-            // Convert
-            const convert = ffmpeg().input(songUnformatted).outputOptions('-ab', '160k').saveToFile(formatted)
+            // Convert to m4a & standardize bitrate which is useful for streaming
+            const convert = ffmpeg().input(songUnformatted).outputOptions('-c:a','aac').outputOptions('-ab', '160k').saveToFile(formatted)
             await classy.wait(convert, songId, MESSAGES.convert)
-            await new Promise(res=>{executeFfmpeg(`-y -i ${formatted} -i ${icon} -map 0 -map 1 -c copy -disposition:v:0 attached_pic ${songWithTags}`).on('error',(error)=>console.log('line 91 yotube dl',error)).on('end',()=>{
+            await new Promise(res=>{executeFfmpeg(`-y -i ${formatted} -i ${icon} -map 0 -map 1 -c copy -disposition:v:0 attached_pic ${songWithImage}`).on('error',(error)=>{
+                console.log(error)
+                classy.reportError(songId,error)
+            }).on('end',()=>{
                 res()
             }).run()})
 
@@ -99,23 +129,27 @@ class youtubeDL {
             // console.log("tags.artist", tags.artist)
             // console.log("tags.title", tags.title)
             // console.log("tags.lyrics",tags.lyrics)
-            // const album  = String(tags?.album).replace(/[^a-zA-Z0-9 \n"]+/g,"")
-            // const artist = String(tags?.artist).replace(/[^a-zA-Z0-9 \n"]+/g,"")
-            // const title  = String(tags?.title).replace(/[^a-zA-Z0-9 \n"]+/g,"")
-            // const lyrics = String(tags?.lyrics).replace(/[^a-zA-Z0-9 \n"]+/g,"")
-
-            // const options = ['-metadata', `album=${album}`,'-metadata', `artist=${artist}`, '-metadata', `title=${title}`, '-metadata', `lyrics=${lyrics}`]
-            // const addTags = ffmpeg(songWithImage).outputOptions('-codec copy').outputOptions(options).saveToFile(songWithTags)
-            // await classy.wait(addTags, songId, MESSAGES.meta)
+            const options = []
+            const addMetadata = (type, metadata)=>{
+                options.push('-metadata')
+                const safeMetadata = `${type}=`+ String(metadata) //.replace(/[^a-zA-Z0-9 \n"]+/g,"")
+                options.push(safeMetadata)
+            }
+            if (tags?.album!=undefined){addMetadata('album',tags?.album)}
+            if (tags?.artist!=undefined){addMetadata('artist',tags?.artist)}
+            if (tags?.title!=undefined){addMetadata('title',tags?.title)}
+            if (tags?.lyrics!=undefined){addMetadata('lyrics',tags?.lyrics)}
+            const addTags = ffmpeg(songWithImage).outputOptions('-codec copy').outputOptions(...options).saveToFile(songWithTags)
+            await classy.wait(addTags, songId, MESSAGES.meta)
             
             // Success!
             //console.log(songWithTags)
-            classy.report(songId, MESSAGES.success)
+            await classy.report(songId, MESSAGES.success)
 
         } catch(err){
             isError = err
             console.log(err)
-            classy.report(songId)
+            await classy.report(songId, err)
         }
 
         // Remove tmp files

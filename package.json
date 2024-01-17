@@ -2,12 +2,12 @@
   "name": "electrondesktop",
   "main": "app.js",
   "scripts": {
-    "prep": "npm install && cd view && npm install",
-    "dev": "DEV=true electron-forge start",
-    "start": "cd view && npm run build && cd .. && electron-forge start",
-    "package": "cd view &&  npm run build && cd .. && electron-forge package",
-    "make": "cd view &&  npm run build && cd .. && electron-forge make",
-    "clean": "bash clean.sh"
+    "prep"   : "npm install && cd view && npm install",
+    "dev"    : "DEV=true electron-forge start",
+    "start"  : "cd view && npm run build && cd .. && electron-forge start",
+    "package": "cd view && npm run build && cd .. && electron-forge package",
+    "make"   : "cd view && npm run build && cd .. && electron-forge make",
+    "clean"  : "bash clean.sh"
   },
   "config": {
     "forge": "./electron/forge.config.js"

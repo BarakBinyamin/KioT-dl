@@ -23,9 +23,9 @@ async function main(){
       }
     })
     mainWindow.loadFile("./app.html")
-    if (process.env.DEV === "true"){
+    //if (process.env.DEV === "true"){
       mainWindow.webContents.openDevTools()   
-    }
+    //}
   }
 
   app.whenReady().then(() => {
@@ -46,7 +46,7 @@ async function main(){
   })
 
   const server  = require("./services/index.js")
-  server( {
+  server({
     dist    : `${__dirname}/view/dist`,
     port    :  API_PORT, 
     library : `${__dirname}/services/library`
