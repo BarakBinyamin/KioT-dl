@@ -125,10 +125,7 @@ class youtubeDL {
                 res()
             }).run()})
 
-            // console.log("tags.album", tags.album)
-            // console.log("tags.artist", tags.artist)
-            // console.log("tags.title", tags.title)
-            // console.log("tags.lyrics",tags.lyrics)
+            // Add meta tags
             const options = []
             const addMetadata = (type, metadata)=>{
                 options.push('-metadata')
