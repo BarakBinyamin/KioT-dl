@@ -4,6 +4,8 @@ const findPort                        = require("find-free-port")
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
+if (require('electron-squirrel-startup')){app.quit()} // Handle windows install
+
 let VIEW_PORT       = 5173  
 let API_PORT        = 2999
 const defaultHeight = 600
@@ -16,12 +18,12 @@ async function main(){
   const createWindow = () => {
     const mainWindow = new BrowserWindow({ 
       width: defaultWidth, height: defaultHeight,
-      //icon: path.join(__dirname,'electron/icons/mac/icon.png'),
+      icon: path.join(__dirname,'electron/icons/icon.ico'),
       webPreferences: {
         preload: path.join(__dirname, 'electron/electron-api-back.js'),
       }
     })
-    mainWindow.loadFile("./app.html")
+    mainWindow.loadFile(`${__dirname}/app.html`)
     //if (process.env.DEV === "true"){
       mainWindow.webContents.openDevTools()   
     //}
@@ -44,7 +46,7 @@ async function main(){
     app.quit()
   })
 
-  const server  = require("./services/index.js")
+  const server  = require(`${__dirname}/services/index.js`)
   server({
     dist    : `${__dirname}/view/dist`,
     port    :  API_PORT, 

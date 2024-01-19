@@ -15,6 +15,8 @@ This project is just getting started, feel free to try it out yourself, and offe
 
 Directory
 - [Install](#install)
+- [Features](#)
+- [Directory](#)
 - [Building](#bulding)
 - [In progress](#in-progress)
 - [Motivation](#motivation)
@@ -28,6 +30,8 @@ Directory
 Releases coming soon...
 
 ## Bulding
+This app must be built on the platform it's intended (windows, mac, linux), vm's work for windows and linux
+Build dependencies: [git](), [nodejs](), 
 
 ## In Progress
 - [ ] Electron forge ignore extra files
