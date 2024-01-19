@@ -13,7 +13,7 @@ async function main(){
         songId : "0p-123p123123-123132"
     }
     ]
-    await db.push(songs[0]); await db.push(songs[1]);
+    await db.add(songs[0]); await db.add(songs[1]);
     const result = await db.search("way d")
     console.log(result)
 }

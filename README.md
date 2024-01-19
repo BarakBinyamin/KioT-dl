@@ -1,6 +1,6 @@
 # KioT-dl
 <p align="center">
-<img src="electron/icons/mac/icon.png" style="width:100px;"/>
+<img src="electron/icons/icon.png" style="width:100px;"/>
 </p>
 <p align="center">
     <!-- <span align="center"> Download</span><br> -->
@@ -15,7 +15,7 @@ This project is just getting started, feel free to try it out yourself, and offe
 
 Directory
 - [Install](#install)
-- [Features](#)
+- [Features](#features)
 - [Directory](#)
 - [Building](#bulding)
 - [In progress](#in-progress)
@@ -29,9 +29,39 @@ Directory
 ### Windows and linux
 Releases coming soon...
 
+## Features
+- Easy song search & download tool
+- Rest API to programatically control the app, hop on to websockets to get live updates on download progress
+- Play songs from the app
+<video src=""/>
+
+## Directory
+# Project Directory
+| Name                                   | Purpose                                           | 
+| :--                                    | :--                                               |
+|[electron](electron)                    | Electron setup and config stuff                   |
+|[services](services)                    | Services served through rest api, also hosts view |
+|[view](view)                            | Where the view is developed                       |
+|[app.html](app.html)                    | Starting point of the app                         |
+|[app.js](app.js)                        | Starting point of the app                         |
+|[clean.sh](clean.sh)                    | Script to remove all generated files              |
+|[package.json](package.json)            | Top level depedency management file               |
+
 ## Bulding
-This app must be built on the platform it's intended (windows, mac, linux), vm's work for windows and linux
-Build dependencies: [git](), [nodejs](), 
+You can build the app yourself too! It must be built on the platform it's intended (windows, mac, linux), vm's work for windows and linux
+Build dependencies: [git](https://git-scm.com/downloads), [nodejs](https://nodejs.org/en), [vscode](https://code.visualstudio.com/download)
+
+## Developing New Features
+```bash
+# /view - launch view with live updates
+npm run dev
+```
+```bash
+# /     - launch app with dev tools open, no live updates for the api though
+npm run prep; npm run dev
+```
+Note : Some features like downloads are prevented during dev mode due to cross origin rules, (api at port 3000, view at port 5173)
+
 
 ## In Progress
 - [ ] Electron forge ignore extra files
@@ -53,6 +83,7 @@ There were several cool challanges while making this project
 - https://www.electronjs.org/docs/latest/tutorial/code-signing - code signing
 - https://thenounproject.com/browse/icons/term/coyote/ - source of icon
 - https://makeappicon.com/ - make icons
+- https://www.electronforge.io/guides/create-and-add-icons - add icons 
 - https://www.electronforge.io/config/makers/dmg - how to add background image for mac dmg
 - https://creatomate.com/blog/-how-to-use-ffmpeg-in-nodejs - static-ffmpeg
 - https://stackoverflow.com/questions/59800915/-how-can-i-execute-a-custom-ffmpeg-string-command-with-fluent-ffmpeg - ffmpeg wrapper

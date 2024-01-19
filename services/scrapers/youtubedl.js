@@ -4,7 +4,6 @@ const ffmpegStatic   = require('ffmpeg-static')
 const ffmpeg         = require('fluent-ffmpeg'); ffmpeg.setFfmpegPath(ffmpegStatic)
 const progress       = require('progress-stream')
 
-
 const TMPDIR = __dirname +  "/tmp/"
 
 const MESSAGES = {
@@ -29,9 +28,10 @@ const executeFfmpeg = args => {
 
 class youtubeDL { 
 
-    constructor(io,queue){
-        this.io    = io
-        this.queue = queue
+    constructor(io, queue, database){
+        this.io       = io
+        this.queue    = queue
+        this.database = database
     }
 
     async report(songId, message, percent){
@@ -139,7 +139,15 @@ class youtubeDL {
             const addTags = ffmpeg(songWithImage).outputOptions('-codec copy').outputOptions(...options).saveToFile(songWithTags)
             await classy.wait(addTags, songId, MESSAGES.meta)
             
-            // Success!
+            // Success! Add to database
+            this.database.add({
+                title  : tags?.title,
+                artist : tags?.artist,
+                album  : tags?.album,
+                lyrics : tags?.lyrics,
+                songId : songId
+            })
+
             //console.log(songWithTags)
             await classy.report(songId, MESSAGES.success)
 

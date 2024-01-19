@@ -11,6 +11,7 @@ const youtubeDL  = require(`./scrapers/youtubedl.js`)
 const cors       = require('cors')
 const { v4: uuidv4 } = require('uuid')
 const fs             = require('fs')
+const DB             = require('./database/index.js')
 
 const queue = []
 
@@ -18,7 +19,8 @@ async function main(config) {
     const viewPath  = config.dist
     const port      = config.port
     const library   = config.library
-    const youtubedl = new youtubeDL(io, queue)
+    const database  = new DB(); await database.init()
+    const youtubedl = new youtubeDL(io, queue, database)
 
     app.use(express.json()) 
     app.use(express.urlencoded({ extended: true }))
@@ -42,10 +44,24 @@ async function main(config) {
             res.send(result)
         }
     })
+    app.get('/search', async function (req, res) {
+        const songname = (req.query?.songname != undefined || req.query?.songname?.length<1) ? req.query?.songname : " "
+        const results  = await database.search(songname)
+        res.send(results)
+    })
     app.get('/queue',(req,res)=>{
         res.send(queue)
     })
     app.get("/*.m4a",(req,res)=>{
+        try {
+            if (fs.lstatSync(library+req.path).isFile()){
+                res.sendFile(library+req.path)
+            }
+        }catch{
+            res.send("nope.")
+        }
+    })
+    app.get("/*.png",(req,res)=>{
         try {
             if (fs.lstatSync(library+req.path).isFile()){
                 res.sendFile(library+req.path)

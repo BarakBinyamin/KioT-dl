@@ -8,7 +8,7 @@ if (require('electron-squirrel-startup')){app.quit()} // Handle windows install
 
 let VIEW_PORT       = 5173  
 let API_PORT        = 2999
-const defaultHeight = 600
+const defaultHeight = 700
 const defaultWidth  = 800
 
 async function main(){
