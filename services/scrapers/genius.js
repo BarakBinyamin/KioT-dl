@@ -165,7 +165,7 @@ async function getGeniusSongLink(whatever){
     const result    = await axios.get(googleURL, { 'User-Agent' : "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" })
     const links     = result.data.match(/https:\/\/genius.com\/[^&"]*(annotated|lyrics)[&"]/g)
     const link      = links[0].replace("&","")
-    console.log(links)
+    // console.log(links)
     // console.log("Genius Link:", link)
     return link
 }
