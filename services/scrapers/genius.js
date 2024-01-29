@@ -27,7 +27,7 @@ async function getGeniusData(geniusLink){
     const dom = new JSDOM(tag, { runScripts: "dangerously", resources: "usable" });
     const info =  await new Promise((resolve) => {
         dom.window.addEventListener("load", () => {
-            resolve(dom.window.__PRELOADED_STATE__)z
+            resolve(dom.window.__PRELOADED_STATE__)
         })
     })
 
