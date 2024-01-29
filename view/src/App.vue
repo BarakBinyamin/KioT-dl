@@ -12,7 +12,7 @@
           </div>
           <div class="results-container">
             <library   v-show="tab==0" :songs="library"  ></library>
-            <downloads v-show="tab==1" :songs="downloads"></downloads>
+            <downloads v-show="tab==1" :songs="downloads" :socketio="socketio"></downloads>
           </div>
         </div>
       </div>
@@ -50,7 +50,7 @@ export default{
       downloads     : [],
       library   : [],
       host      : HOST,
-      tab       : 0
+      tab       : 0,
     }
   },
   async beforeMount(){
@@ -120,32 +120,35 @@ export default{
         const results = await api.searchLibrary(this.searchbar)
         this.library = results
       }else{
-        this.lastLetter = Date.now()
-          setTimeout(async ()=>{
-            if ( (Date.now() - this.lastLetter)>1000 &&  !this.clear){
-              this.upnext =  {artist: "...", "title": "..."}
-              const res = await api.lookup(this.searchbar)
-              if (res.type === "song" && !this.downloads.find(song=>song.title==res.info.title)){
-                this.upnext = res.info
-                console.log("here",res.info)
-              }else{
-                this.upnext =  null
-                console.log("here2",res)
-              }
-              // console.log(this.searchbar)
-            }else[
-              this.clear = false
-            ]
-          },1000)
+      // Causing too many requests, more likely to get blocked by google
+      //   this.lastLetter = Date.now()
+      //     setTimeout(async ()=>{
+      //       if ( (Date.now() - this.lastLetter)>1000 &&  !this.clear){
+      //         this.upnext =  {artist: "...", "title": "..."}
+      //         const res = await api.lookup(this.searchbar)
+      //         if (res.type === "song" && !this.downloads.find(song=>song.title==res.info.title)){
+      //           this.upnext = res.info
+      //           console.log("here",res.info)
+      //         }else{
+      //           this.upnext =  null
+      //           console.log("here2",res)
+      //         }
+      //         // console.log(this.searchbar)
+      //       }else[
+      //         this.clear = false
+      //       ]
+      //     },1000)
+      // }
       }
     },
     async add(){
       const songId = uuidv4()
-      this.downloads.unshift({songId:songId, title: this.searchbar})
-      const res = await api.getsong(this.searchbar, songId)
+      const title  = this.searchbar
       this.upnext    =  null
       this.clear     = true
       this.searchbar = ""
+      this.downloads.unshift({songId:songId, title: title, progress: "downloading..."})
+      const res = await api.getsong(title, songId)
       if (res.type === "song"){
         console.log(res.songId)
         const song = this.downloads.find(item=>item.songId==res.info.songId)
@@ -155,7 +158,9 @@ export default{
           song[key]=res.info[key]
         }
       }else{
-        console.log("not a song")
+        const song = this.downloads.find(item=>item.songId==res.songId)
+        song["progress"]= "Failed"
+        console.log("Failed")
       }
     },
     acceptableName(song) {
@@ -374,12 +379,13 @@ html,body, #app{
   background: var(--third-bg-color);
   border-radius: 10px;
   text-align: center;
+  opacity   :.8;
 }
 .tab:hover{
   cursor : pointer;
-  opacity: .8;
+  opacity: 1;
 }
 .selected{
-  opacity: .8;
+  opacity: 1;
 }
 </style>

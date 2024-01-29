@@ -51,7 +51,7 @@ class youtubeDL {
         // Termperary fix for monitoring error
         this.io.emit(this.io.events.error,{
             songId  : songId,
-            data    : error
+            data    : MESSAGES.failed + String(error)
         })
     }
 
@@ -92,6 +92,9 @@ class youtubeDL {
         let isError = false
         
         try {
+            // if (!link){
+            //     classy.reportError(songId,"No Link")
+            // }
             // Download song
             let info       = await ytdl.getInfo(link)
             const metadata = ytdl.chooseFormat(info.formats, { quality: 'highestaudio' })

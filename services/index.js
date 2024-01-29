@@ -28,19 +28,23 @@ async function main(config) {
     app.use(express.static(viewPath))
     app.get('/genius', async function (req, res) {
         const songname = req.query.songname 
-        const result   = await genius(songname)
+        let  result    = ""
+        try{
+        result   = await genius(songname)
         res.send(result)
+        }catch(err){console.log(err); res.send(result)}
     })
     app.get('/dl', async function (req, res) {
         const songname = req.query.songname 
         const result   = await genius(songname)
+        result.songId  = req.query.songId
         if (result.type=="song" && req.query.songId!=undefined){
-            result.songId      = req.query.songId
             result.info.songId = result.songId 
             youtubedl.get(result.songId,result.info.youtubelink,result.info,library)
             queue.unshift(result.info)
             res.send(result)
         } else{
+            result.status = "Failed"
             res.send(result)
         }
     })

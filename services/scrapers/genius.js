@@ -3,7 +3,6 @@ const cheerio = require('cheerio')
 const jsdom   = require("jsdom")
 const {JSDOM} = jsdom
 
-
 /*
 * Searches genius.com for song and album information...
 * Sometimes it even includes youtube & spotify links!
@@ -12,9 +11,7 @@ const {JSDOM} = jsdom
 
 async function getGeniusData(geniusLink){
     if (!geniusLink.includes('genius.com') || geniusLink==="https://genius.com/"){return {"type": "info", "info":"couldn't find genius.com link", "url": geniusLink}}
-    const result    = await axios.get(geniusLink, {
-        'User-Agent' : "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0"
-    })
+    const result    = await axios.get(geniusLink, {'User-Agent' : "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0"})
 
     // Find the script tag with all the data in it
     const html      = result.data
@@ -30,7 +27,7 @@ async function getGeniusData(geniusLink){
     const dom = new JSDOM(tag, { runScripts: "dangerously", resources: "usable" });
     const info =  await new Promise((resolve) => {
         dom.window.addEventListener("load", () => {
-            resolve(dom.window.__PRELOADED_STATE__)
+            resolve(dom.window.__PRELOADED_STATE__)z
         })
     })
 
@@ -63,6 +60,9 @@ async function getReleventSongData(geniusData){
     info.artwork     = songData.customSongArtImageUrl || songData.songArtImageUrl
     info.releaseDate = songData.releaseDateForDisplay
     info.youtubelink = songData.youtubeUrl
+    if (!info.youtubelink){
+        info.youtubelink = await getYoutubeLink(`${info.title} by ${info.artist}`)
+    }
     info.spotifyUuid = songData.spotifyUuid
     return {"type": "song", "info":info, "url" : url}
 }
@@ -83,10 +83,8 @@ async function imFeelingLucky(whatever){
     // const result    = await axios.get(googleURL, {
     //     'User-Agent' : "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0"
     // })
-
     let headers = new Headers({ 'User-Agent' : "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0"})
-    let result  = (await fetch(googleURL, { method  : 'GET', headers : headers })).text()
-
+    let result  = await (await fetch(googleURL, { method  : 'GET', headers : headers })).text()
 
     const html      = result.data
     const linkTag   = /<a href="\/url?[^>]*>/g
@@ -96,16 +94,46 @@ async function imFeelingLucky(whatever){
     return link
 }
 
+// Todo
+// 1. get captcha id from captcha api
+// 2. submit captcha id with hidden form to get access again
+async function solveCpatcha(){
+    const dom = new JSDOM(html, { runScripts: "dangerously", resources: "usable" });
+    try{
+    const info =  await new Promise((resolve) => {
+        dom.window.addEventListener("load", async () => {
+            await new Promise(res=>setTimeout(res,2000))
+            const reCAPTCHA = dom.window.document.querySelector('iframe[title="reCAPTCHA"]')
+            console.log(reCAPTCHA)
+            await new Promise(resolve => reCAPTCHA.addEventListener('load', () => resolve()))
+            //dom.window.document.querySelector('iframe[title="reCAPTCHA"]').contentWindow.document.getElementById("recaptcha-anchor").click()
+            resolve()
+        })
+    })
+        console.log(dom)
+     }
+    catch(error){
+        console.log(error)
+        throw new Error("this is unpurpose") 
+    }
+}
+
 async function lookup(whatever){
     const googleURL = `https://www.google.com/search?q=${encodeURI(whatever.replace(/ /g,"+"))}`
+    //let headers = new Headers({ 'User-Agent' : "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0"})
+    //let response  = (await fetch(googleURL, { method  : 'GET', headers : headers }))
+    //let html      = await response.text()
+   
     const result    = await axios.get(googleURL, {
         'User-Agent' : "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0"
     })
-    // let headers = new Headers({ 'User-Agent' : "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0"})
-    // let result  = await (await fetch(googleURL, { method  : 'GET', headers : headers })).text()
     const html      = result.data
-    const linkTag   = /<a href="\/url?[^>]*>/g
+    // if (response.status!=200){ return "failed"// }
+    console.log(html)
+    const linkTag   = /https:\/\/genius.com\/[^&"]*[&"]/g
     const luckyTags = html.match(linkTag)
+    console.log(luckyTags)
+    console.log(luckyTags.length)
     const linkRegex = /http[^&]*/
     let links       = []
     for (let index=0; index<luckyTags.length;index++ ){
@@ -117,23 +145,35 @@ async function lookup(whatever){
     return links.slice(1,-1).map(item=>item[0])
 }
 
-async function getGeniusSongLink(links){
-    for (let index=0;index<links.length;index++){
-        const link=links[index]
-        if (link.includes('genius.com') && link.includes("lyrics")){
-            const songRegex = /http.*lyrics/
-            return link.match(songRegex)[0]
-        }
-    }
-    return ""
+async function getYoutubeLink(whatever){
+    // const axios   = require('axios')
+    // const whatever  = `genius hey soul sister`
+    // console.log(whatever)
+    const googleURL = `https://youtube.com/results/results?q=${encodeURI(whatever.replace(/ /g,"+"))}`
+    const result    = await axios.get(googleURL, { 'User-Agent' : "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" })
+    const links     = result.data.match(/watch\?v=[a-zA-Z0-9]{11}/g)
+    const link      = links[0].replace("watch?v=","")
+    // console.log("Genius Link:", link)
+    return link
+}
+
+async function getGeniusSongLink(whatever){
+    // const axios   = require('axios')
+    // const whatever  = `genius hey soul sister`
+    // console.log(whatever)
+    const googleURL = `https://www.google.com/search?q=${encodeURI("genius " + whatever.replace(/ /g,"+"))}`
+    const result    = await axios.get(googleURL, { 'User-Agent' : "Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101 Firefox/81.0" })
+    const links     = result.data.match(/https:\/\/genius.com\/[^&"]*(annotated|lyrics)[&"]/g)
+    const link      = links[0].replace("&","")
+    console.log(links)
+    // console.log("Genius Link:", link)
+    return link
 }
 
 // Communicate status through websockets at higher level
 async function main(somesong){
-    const text         = `genius ${somesong}`
-    const promise1     = lookup(text)
-    const links        = await promise1
-    const geniusLink   = await getGeniusSongLink(links)
+    const text         = `${somesong}`
+    const geniusLink   = await getGeniusSongLink(text)
     const promise2     =  getGeniusData(geniusLink) 
     const geniusStuff  = await promise2
     if        (geniusStuff?.type === "song"){

@@ -1,6 +1,6 @@
 {
   "author": "Barak Binyamin",
-  "description": "A cross platform desktop app for scraping music using Google, Genius.com, & Youtube Resources",
+  "description": "A cross platform desktop app for scraping music using Google, Genius.com, & Youtube",
   "name": "kiot-dl",
   "license": "ISC",
   "version": "1.0.0",

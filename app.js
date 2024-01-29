@@ -24,9 +24,9 @@ async function main(){
       }
     })
     mainWindow.loadFile(`${__dirname}/app.html`)
-    //if (process.env.DEV === "true"){
+    if (process.env.DEV === "true"){
       mainWindow.webContents.openDevTools()   
-    //}
+    }
   }
 
   app.whenReady().then(() => {

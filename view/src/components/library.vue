@@ -1,11 +1,11 @@
 <template>
     <div class="buffer">
-        <!-- <audio id="player"></audio>
+        <audio id="player"></audio>
         <div id="controller" class="controller">
             <div class="stop" @click="stop()">
                 <svg viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#FFFFFF" stroke="#FFFFFF"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>stop</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-520.000000, -571.000000)" fill="#FFFFFF"> <path d="M546,571 L522,571 C520.896,571 520,571.896 520,573 L520,597 C520,598.104 520.896,599 522,599 L546,599 C547.104,599 548,598.104 548,597 L548,573 C548,571.896 547.104,571 546,571" id="stop" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>
             </div>
-        </div> -->
+        </div>
         <table>
             <tr>
                 <th>Title</th>
@@ -46,8 +46,8 @@ export default{
     },
     methods: {
         acceptableName(song) {
-            const name = `${ song.title}-by-${ song.artist}`
-            return name.replace(/[^a-zA-Z0-9\n"]+/g,"-")
+            const name = `${song.title}-by-${song.artist}`
+            return name.replace(/[^a-zA-Z0-9\n"]+/g,"-") + ".m4a"
         },
         play(song){
             document.getElementById('player').src=song
