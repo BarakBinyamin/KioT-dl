@@ -15,15 +15,15 @@ module.exports = {
         ]
     },
     makers: [
-    //  {
-    //   name: '@electron-forge/maker-deb',
-    //   "config": {
-    //       options: {
-    //         maintainer: 'Barak Binyamin',
-    //         icon: path.join(process.cwd(), "electron", "icons", "icon.png")
-    //       }
-    //     }
-    //   },
+     {
+      name: '@electron-forge/maker-deb',
+       "config": {
+           options: {
+             maintainer: 'Barak Binyamin',
+             icon: path.join(process.cwd(), "electron", "icons", "icon.png")
+           }
+         }
+      },
       {
         name: '@electron-forge/maker-squirrel',
         "config": {
