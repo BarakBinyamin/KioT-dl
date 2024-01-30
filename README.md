@@ -5,7 +5,7 @@
 
 <p align="center">
     <!-- <span align="center"> Download</span><br> -->
-    <a href="https://github.com/BarakBinyamin/KioT-dl/releases/download/beta-v0.1.0/KioT-dl-MacOS.Setup.dmg">Mac OS</a> | <span href="">Linux</span> | <span href="https://github.com/BarakBinyamin/KioT-dl/releases/download/beta-v0.1.0/KioT-dl-Windows.Setup.exe">Windows</span>
+    <a href="https://github.com/BarakBinyamin/KioT-dl/releases/download/beta-v0.1.0/KioT-dl-MacOS.Setup.dmg">Mac OS</a> | <span href="">Linux</span> | <a href="https://github.com/BarakBinyamin/KioT-dl/releases/download/beta-v0.1.0/KioT-dl-Windows.Setup.exe">Windows</a>
 </p>
 
 <p>
