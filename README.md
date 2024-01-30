@@ -36,7 +36,6 @@ Releases coming soon...
 - Easy song search & download tool
 - Rest API to programatically control the app, hop on to websockets to get live updates on download progress
 - Play songs from the app
-<video src=""/>
 
 ## Directory
 # Project Directory
