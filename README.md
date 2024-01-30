@@ -2,9 +2,10 @@
 <p align="center">
 <img src="electron/icons/icon.png" style="width:100px;"/>
 </p>
+
 <p align="center">
     <!-- <span align="center"> Download</span><br> -->
-    <a href="https://github.com/BarakBinyamin/KioT-dl/releases/download/beta/KioT-dl-1.0.0-x64.dmg">Mac OS</a> | <span href="">Linux</span> | <span href="">Windows</span>
+    <a href="https://github.com/BarakBinyamin/KioT-dl/releases/download/beta-v0.1.0/KioT-dl-MacOS.Setup.dmg">Mac OS</a> | <span href="">Linux</span> | <span href="https://github.com/BarakBinyamin/KioT-dl/releases/download/beta-v0.1.0/KioT-dl-Windows.Setup.exe">Windows</span>
 </p>
 
 <p>
@@ -12,6 +13,8 @@
 </p>
 
 This project is just getting started, feel free to try it out yourself, and offer feedback for new features! 
+
+<img src="electron/icons/demo.gif"/>
 
 Directory
 - [Install](#install)
@@ -50,6 +53,19 @@ Releases coming soon...
 ## Bulding
 You can build the app yourself too! It must be built on the platform it's intended (windows, mac, linux), vm's work for windows and linux
 Build dependencies: [git](https://git-scm.com/downloads), [nodejs](https://nodejs.org/en), [vscode](https://code.visualstudio.com/download)
+
+### Extra stuff for linux 
+Currently build works, but ffmpeg-static/fluent is struggling during runtime, something to do with native package paths
+```bash
+# install nvm & node @ the version that will work with fluent-ffmpeg
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+nvm install 18.19.0
+source ~/.bashrc
+```
+```bash
+# install dependencies
+sudo apt install dpkg fakeroot
+```
 
 ## Developing New Features
 ```bash

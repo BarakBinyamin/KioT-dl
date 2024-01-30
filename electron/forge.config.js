@@ -1,7 +1,8 @@
 const path = require('node:path')
 
 module.exports = {
-    packagerConfig: {
+    "executableName": "kiot-dl",
+    packagerConfig  : {
         icon: "electron/icons/icon",
         "name": "KioT-dl",
         extraResource: [
